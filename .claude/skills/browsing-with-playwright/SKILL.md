@@ -1,6 +1,6 @@
 ---
-name: browser-use
-description: Browser automation using Playwright MCP. Navigate websites, fill forms, click elements, take screenshots, and extract data. Use when tasks require web browsing, form submission, web scraping, UI testing, or any browser interaction.
+name: browsing-with-playwright
+description: Browser automation using Playwright MCP. Navigate websites, fill forms, click elements, take screenshots, and extract data. Use for web browsing, form submission, web scraping, or UI testing. NOT for static content (use curl/wget).
 ---
 
 # Browser Automation
@@ -127,6 +127,19 @@ python3 scripts/mcp-client.py call -u http://localhost:8808 -t browser_run_code 
 3. Use browser_evaluate for complex extraction
 4. Process results
 
+## Verification
+
+Run: `python3 scripts/verify.py`
+
+Expected: `✓ Playwright MCP server running`
+
+## If Verification Fails
+
+1. Run diagnostic: `pgrep -f "@playwright/mcp"`
+2. Check: Server process running on port 8808
+3. Try: `bash scripts/start-server.sh`
+4. **Stop and report** if still failing - do not proceed with downstream steps
+
 ## Tool Reference
 
 See [references/playwright-tools.md](references/playwright-tools.md) for complete tool documentation.
@@ -139,3 +152,4 @@ See [references/playwright-tools.md](references/playwright-tools.md) for complet
 | Click fails | Try browser_hover first, then click |
 | Form not submitting | Use `"submit": true` with browser_type |
 | Page not loading | Increase wait time or use browser_wait_for |
+| Server not responding | Stop and restart: `bash scripts/stop-server.sh && bash scripts/start-server.sh` |

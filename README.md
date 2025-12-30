@@ -8,7 +8,7 @@ A collection of hands-on skills for students to explore and practice when learni
 
 | Skill | Purpose |
 |-------|---------|
-| **browser-use** | Browser automation using Playwright MCP. Navigate websites, fill forms, click elements, take screenshots, and extract data. Use when tasks require web browsing, form submission, web scraping, UI testing, or any browser interaction |
+| **browsing-with-playwright** | Browser automation using Playwright MCP. Navigate websites, fill forms, click elements, take screenshots, and extract data. Use when tasks require web browsing, form submission, web scraping, UI testing, or any browser interaction |
 | **context7-efficient** | Token-efficient library documentation fetcher for various programming languages, providing code examples, API references, and best practices. |
 | **doc-coauthoring** | Guide users through a structured workflow for co-authoring documentation including proposals, technical specs, decision docs, and similar structured content |
 | **docx** | Comprehensive Word document creation, editing, and analysis with support for tracked changes, comments, formatting preservation, and text extraction |

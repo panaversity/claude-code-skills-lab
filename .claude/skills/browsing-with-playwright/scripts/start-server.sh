@@ -1,5 +1,5 @@
 #!/bin/bash
-# Start Playwright MCP server for browser-use skill
+# Start Playwright MCP server for browsing-with-playwright skill
 # Usage: ./start-server.sh [port]
 
 PORT=${1:-8808}
