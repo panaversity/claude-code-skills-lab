@@ -1,5 +1,5 @@
 ---
-name: skill-creator-enhanced
+name: skill-creator-pro
 description: |
   Creates production-grade, reusable skills that extend Claude's capabilities.
   This skill should be used when users want to create a new skill, improve an
@@ -7,7 +7,7 @@ description: |
   codebase, conversation, and authentic sources before creating adaptable skills.
 ---
 
-# Skill Creator Enhanced
+# Skill Creator Pro
 
 Create production-grade skills that extend Claude's capabilities.
 
