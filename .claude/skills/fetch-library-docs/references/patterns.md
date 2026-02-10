@@ -7,7 +7,7 @@ Real-world examples for common scenarios.
 Building a form component with hooks:
 
 ```bash
-bash scripts/fetch-docs.sh --library-id /reactjs/react.dev \
+python3 scripts/fetch-docs.py --library-id /reactjs/react.dev \
   --topic "form handling useState" \
   --content-type examples,api-ref
 ```
@@ -17,7 +17,7 @@ bash scripts/fetch-docs.sh --library-id /reactjs/react.dev \
 Error: `PrismaClientKnownRequestError: Unique constraint failed`
 
 ```bash
-bash scripts/fetch-docs.sh --library-id /prisma/docs \
+python3 scripts/fetch-docs.py --library-id /prisma/docs \
   --topic "unique constraint error" \
   --content-type troubleshooting,examples
 ```
@@ -27,7 +27,7 @@ bash scripts/fetch-docs.sh --library-id /prisma/docs \
 Adding authentication to Next.js app:
 
 ```bash
-bash scripts/fetch-docs.sh --library-id /vercel/next.js \
+python3 scripts/fetch-docs.py --library-id /vercel/next.js \
   --topic "authentication middleware" \
   --content-type setup,examples
 ```
@@ -37,7 +37,7 @@ bash scripts/fetch-docs.sh --library-id /vercel/next.js \
 Migrating from Tailwind v3 to v4:
 
 ```bash
-bash scripts/fetch-docs.sh --library tailwind \
+python3 scripts/fetch-docs.py --library tailwind \
   --topic "upgrade v3 v4" \
   --content-type migration
 ```
@@ -47,7 +47,7 @@ bash scripts/fetch-docs.sh --library tailwind \
 Should I use server components?
 
 ```bash
-bash scripts/fetch-docs.sh --library-id /vercel/next.js \
+python3 scripts/fetch-docs.py --library-id /vercel/next.js \
   --topic "server components" \
   --content-type patterns,concepts
 ```
@@ -57,7 +57,7 @@ bash scripts/fetch-docs.sh --library-id /vercel/next.js \
 Connecting Prisma with Next.js API routes:
 
 ```bash
-bash scripts/fetch-docs.sh --library-id /prisma/docs \
+python3 scripts/fetch-docs.py --library-id /prisma/docs \
   --topic "next.js integration api routes" \
   --content-type examples,setup
 ```
@@ -67,7 +67,7 @@ bash scripts/fetch-docs.sh --library-id /prisma/docs \
 Setting up Tailwind in new project:
 
 ```bash
-bash scripts/fetch-docs.sh --library-id /tailwindlabs/tailwindcss.com \
+python3 scripts/fetch-docs.py --library-id /tailwindlabs/tailwindcss.com \
   --topic "installation next.js" \
   --content-type setup
 ```
@@ -77,7 +77,7 @@ bash scripts/fetch-docs.sh --library-id /tailwindlabs/tailwindcss.com \
 Quick lookup for function parameters:
 
 ```bash
-bash scripts/fetch-docs.sh --library-id /reactjs/react.dev \
+python3 scripts/fetch-docs.py --library-id /reactjs/react.dev \
   --topic "useEffect" \
   --content-type api-ref
 ```

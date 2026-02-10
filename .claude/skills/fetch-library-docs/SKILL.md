@@ -65,13 +65,19 @@ Priority: User specifies → Error message → Feature being implemented → "ge
 
 ## EXECUTION
 
+**IMPORTANT: Always use the Python entry point (`fetch-docs.py`) for cross-platform compatibility.**
+
+Use `python3` on Linux/macOS/WSL, `python` on Windows:
+
 ```bash
 # With known library ID (faster - saves 1 API call)
-bash scripts/fetch-docs.sh --library-id <id> --topic "<topic>" --content-type <types>
+python3 scripts/fetch-docs.py --library-id <id> --topic "<topic>" --content-type <types>
 
 # With library name (auto-resolves)
-bash scripts/fetch-docs.sh --library <name> --topic "<topic>" --content-type <types>
+python3 scripts/fetch-docs.py --library <name> --topic "<topic>" --content-type <types>
 ```
+
+> **Windows note:** Use `python` instead of `python3` (e.g., `python scripts/fetch-docs.py ...`)
 
 ### Quick Library IDs
 

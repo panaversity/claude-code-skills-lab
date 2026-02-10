@@ -201,22 +201,22 @@ class StdioTransport:
         if self._process is not None:
             return
 
+        # Redirect stderr to devnull to avoid diagnostic messages interfering with stdout
+        # Use open(os.devnull, 'w') for better Windows/MINGW64 compatibility
+        import os
         self._process = subprocess.Popen(
             self.command,
             shell=True,
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
+            stderr=open(os.devnull, 'w'),
             text=True,
             bufsize=1
         )
 
-        # Start reader thread
-        self._reader_thread = threading.Thread(target=self._read_responses, daemon=True)
-        self._reader_thread.start()
-
-        # Send initialize request
-        self._send({
+        # Send initialize request BEFORE starting reader thread
+        # (Windows/MINGW64 has issues with threaded readline starting before data is available)
+        init_msg = {
             "jsonrpc": "2.0",
             "id": self._next_id(),
             "method": "initialize",
@@ -225,21 +225,31 @@ class StdioTransport:
                 "capabilities": {},
                 "clientInfo": {"name": "mcp-client", "version": "1.0.0"}
             }
-        })
+        }
+        line = json.dumps(init_msg) + "\n"
+        self._process.stdin.write(line)
+        self._process.stdin.flush()
 
-        # Wait for initialize response
+        # Read initialize response SYNCHRONOUSLY (in main thread)
         try:
-            resp = self._response_queue.get(timeout=10)
+            response_line = self._process.stdout.readline()
+            if not response_line:
+                raise MCPClientError("No response from server")
+            resp = json.loads(response_line.strip())
             if "error" in resp:
                 raise MCPClientError(f"Initialize failed: {resp['error']}")
-        except queue.Empty:
-            raise MCPClientError("Timeout waiting for server initialization")
+        except json.JSONDecodeError as e:
+            raise MCPClientError(f"Invalid JSON response: {e}")
 
         # Send initialized notification
-        self._send({
-            "jsonrpc": "2.0",
-            "method": "notifications/initialized"
-        })
+        notified_msg = {"jsonrpc": "2.0", "method": "notifications/initialized"}
+        line = json.dumps(notified_msg) + "\n"
+        self._process.stdin.write(line)
+        self._process.stdin.flush()
+
+        # NOW start reader thread for subsequent requests
+        self._reader_thread = threading.Thread(target=self._read_responses, daemon=True)
+        self._reader_thread.start()
 
     def _read_responses(self):
         """Background thread to read responses from the server."""

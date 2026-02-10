@@ -1,0 +1,9 @@
+# Ensure shell scripts always use LF line endings (required for bash)
+*.sh text eol=lf
+
+# Python scripts also need LF
+*.py text eol=lf
+
+# Markdown and text files can use platform-native endings
+*.md text
+*.txt text

@@ -103,17 +103,7 @@ check_api_errors() {
     exit 1
   fi
 
-  # No API key and got an error
-  if ! has_api_key && [ "$exit_code" -ne 0 ]; then
-    echo "[CONTEXT7_API_KEY_RECOMMENDED]"
-    echo ""
-    echo "Request failed. Consider adding an API key for reliable access."
-    echo ""
-    api_key_error_message
-    echo ""
-    echo "Original error: $output"
-    exit 1
-  fi
+  # No API key check - removed to allow operation without key
 }
 
 # Main fetch logic with retry for infrastructure failures

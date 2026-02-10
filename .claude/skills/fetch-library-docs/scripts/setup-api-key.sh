@@ -46,7 +46,8 @@ print_status() {
 
   if [ -n "$key" ]; then
     # Mask the API key for display
-    local masked="${key:0:8}...${key: -4}"
+    local key_len=${#key}
+    local masked="${key:0:8}...${key:$((key_len - 4))}"
     echo -e "  ${GREEN}✓${NC} API Key: $masked"
     echo -e "  ${GREEN}✓${NC} Source: $source"
     echo ""
@@ -126,7 +127,10 @@ setup_interactive() {
   else
     local config_file="$HOME/.context7.env"
     echo "CONTEXT7_API_KEY=$api_key" > "$config_file"
-    chmod 600 "$config_file"  # Restrict permissions
+    # Restrict permissions (skip on Windows where chmod is unsupported)
+    if [[ "$OSTYPE" != "msys" && "$OSTYPE" != "mingw"* && "$OSTYPE" != "cygwin" ]]; then
+      chmod 600 "$config_file"
+    fi
     echo -e "${GREEN}✓${NC} Saved to: $config_file (user-level)"
   fi
 

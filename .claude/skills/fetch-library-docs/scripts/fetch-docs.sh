@@ -96,7 +96,8 @@ show_api_status() {
   echo ""
   if has_api_key; then
     local key=$(load_context7_api_key)
-    local masked="${key:0:12}...${key: -4}"
+    local key_len=${#key}
+    local masked="${key:0:12}...${key:$((key_len - 4))}"
     echo "Status: CONFIGURED"
     echo "Key: $masked"
     echo "Source: $(get_api_key_source)"
@@ -193,14 +194,6 @@ if [ -n "${LIBRARY_NAME:-}" ] && [ -z "$LIBRARY_ID" ]; then
     -t resolve-library-id \
     -p "{\"query\": \"$TOPIC\", \"libraryName\": \"$LIBRARY_NAME\"}" 2>&1) || {
 
-    # Check if it's an API key issue
-    if ! has_api_key; then
-      echo "[CONTEXT7_API_KEY_MISSING]"
-      echo ""
-      api_key_error_message
-      exit 1
-    fi
-
     echo "[RESOLVE_ERROR]"
     echo ""
     echo "Failed to resolve library name: $LIBRARY_NAME"
@@ -216,9 +209,20 @@ if [ -n "${LIBRARY_NAME:-}" ] && [ -z "$LIBRARY_ID" ]; then
     RESOLVE_TEXT=$(echo "$RESOLVE_OUTPUT" | "$PYTHON_CMD" -c 'import sys, json; data=json.load(sys.stdin); print(data.get("content", [{}])[0].get("text", ""))' 2>/dev/null || echo "")
   fi
 
-  # Extract first library ID and title
-  LIBRARY_ID=$(echo "$RESOLVE_TEXT" | grep -oP 'Context7-compatible library ID:\s*\K[/\w.-]+' 2>/dev/null | head -n 1 || echo "")
-  LIBRARY_TITLE=$(echo "$RESOLVE_TEXT" | grep -oP '^\d+\.\s*\K[^\n]+' 2>/dev/null | head -n 1 || echo "")
+  # Extract first library ID and title (cross-platform: no grep -oP)
+  LIBRARY_ID=$(echo "$RESOLVE_TEXT" | "$PYTHON_CMD" -c "
+import sys, re
+text = sys.stdin.read()
+m = re.search(r'Context7-compatible library ID:\s*([/\w.-]+)', text)
+print(m.group(1) if m else '')
+" 2>/dev/null || echo "")
+
+  LIBRARY_TITLE=$(echo "$RESOLVE_TEXT" | "$PYTHON_CMD" -c "
+import sys, re
+text = sys.stdin.read()
+m = re.search(r'^\d+\.\s*(.+)', text, re.MULTILINE)
+print(m.group(1) if m else '')
+" 2>/dev/null || echo "")
 
   if [ -z "$LIBRARY_ID" ]; then
     echo "[LIBRARY_NOT_FOUND]"
